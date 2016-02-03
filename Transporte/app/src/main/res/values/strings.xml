@@ -3,4 +3,12 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="tituloPrincipal">Meu Transporte</string>
+    <string name="drawer_item_notificacao">Notificações</string>
+    <string name="drawer_item_sobre">Sobre</string>
+    <string name="drawer_item_configurações">Configuração</string>
+    <string name="drawer_item_peças">Peças</string>
+    <string name="drawer_item_transporte">Transporte</string>
+    <string name="title_activity_cadastro_analisectivity">CadastroAnalisectivity</string>
+    <string name="title_activity_cadastro_analise">CadastroAnaliseActivity</string>
 </resources>
