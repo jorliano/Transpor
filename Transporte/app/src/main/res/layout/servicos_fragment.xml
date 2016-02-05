@@ -8,7 +8,7 @@
         android:id="@+id/realm_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:rrvGridLayoutSpanCount="2"
+        app:rrvGridLayoutSpanCount="1"
         app:rrvIsRefreshable="false"
         app:rrvLayoutType="Grid" />
 

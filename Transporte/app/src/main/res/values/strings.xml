@@ -11,4 +11,6 @@
     <string name="drawer_item_transporte">Transporte</string>
     <string name="title_activity_cadastro_analisectivity">CadastroAnalisectivity</string>
     <string name="title_activity_cadastro_analise">CadastroAnaliseActivity</string>
+    <string name="title_activity_materia">MateriaActivity</string>
+    <string name="title_activity_cadastro_transporte_">cadastro_transporte_Activity</string>
 </resources>

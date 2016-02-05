@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="fill_parent"
+        android:id="@+id/card"
+        android:layout_height="200dp"
+        card_view:contentPadding="@dimen/activity_horizontal_margin"
+        card_view:cardCornerRadius="3dp">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/sandeiro"/>
+
+        <TextView
+            android:id="@+id/app"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/background_light"
+            android:background="#757575"
+            android:alpha="0.8"
+            android:textSize="@dimen/abc_text_size_headline_material"
+            android:text="Meu trasnporte"/>
+
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/texto"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryText"
+            android:alpha="0.8"
+            android:textSize="@dimen/abc_text_size_headline_material"
+            android:text="Test"/>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".application.CustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,12 +21,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CadastroAnalisectivity"
-            android:label="@string/title_activity_cadastro_analisectivity" >
+            android:name=".CadastroServicosActivity"
+            android:label="@string/title_activity_cadastro_analise" >
         </activity>
         <activity
-            android:name=".CadastroAnaliseActivity"
-            android:label="@string/title_activity_cadastro_analise" >
+            android:name=".MateriaActivity"
+            android:label="@string/title_activity_materia" >
+        </activity>
+        <activity
+            android:name=".CadastroTransporteActivity"
+            android:label="@string/title_activity_cadastro_transporte_" >
         </activity>
     </application>
 

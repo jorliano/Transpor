@@ -1,5 +1,6 @@
 package br.com.jortec.jorliano.transporte.fragmento;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import br.com.jortec.jorliano.transporte.CadastroTransporteActivity;
 import br.com.jortec.jorliano.transporte.R;
 
 /**
@@ -44,10 +46,11 @@ public class TransporteFragment extends Fragment {
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+        fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), "Editar Dados ", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(view.getContext(), CadastroTransporteActivity.class).putExtra("id",""));
             }
         });
 

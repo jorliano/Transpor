@@ -7,15 +7,17 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Jorliano on 02/02/2016.
  */
-public class Analise extends RealmObject {
+public class Servicos extends RealmObject {
 
     @PrimaryKey
     private long id;
-    private String titulo;
+    private String descricao;
     private String data;
-    private String sobre;
+    private Float proximaTroca;
+    private int periodo;
     private long imagem;
     private RealmList<Material> materiais;
+
 
     public long getId() {
         return id;
@@ -25,20 +27,12 @@ public class Analise extends RealmObject {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public long getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(long imagem) {
-        this.imagem = imagem;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getData() {
@@ -49,14 +43,29 @@ public class Analise extends RealmObject {
         this.data = data;
     }
 
-    public String getSobre() {
-        return sobre;
+    public Float getProximaTroca() {
+        return proximaTroca;
     }
 
-    public void setSobre(String sobre) {
-        this.sobre = sobre;
+    public void setProximaTroca(Float proximaTroca) {
+        this.proximaTroca = proximaTroca;
     }
 
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+
+    public long getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(long imagem) {
+        this.imagem = imagem;
+    }
 
     public RealmList<Material> getMateriais() {
         return materiais;
