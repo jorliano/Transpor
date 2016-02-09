@@ -24,7 +24,7 @@
         android:layout_marginRight="5dp"
         android:hint="Valor"
         android:inputType="numberDecimal"
-        android:maxLength="2"
+        android:maxLength="6"
         android:maxLines="1" />
 
     <Button

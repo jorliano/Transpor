@@ -1,5 +1,7 @@
 package br.com.jortec.jorliano.transporte.dominio;
 
+import java.util.Date;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -8,12 +10,14 @@ import io.realm.annotations.PrimaryKey;
  * Created by Jorliano on 02/02/2016.
  */
 public class Servicos extends RealmObject {
+    public static final String ID = "br.com.jortec.jorliano.transporte.dominio.servico.ID";
 
     @PrimaryKey
     private long id;
     private String descricao;
-    private String data;
+    private Date data;
     private Float proximaTroca;
+    private float ultimaTroca;
     private int periodo;
     private long imagem;
     private RealmList<Material> materiais;
@@ -35,11 +39,11 @@ public class Servicos extends RealmObject {
         this.descricao = descricao;
     }
 
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
 
@@ -73,5 +77,13 @@ public class Servicos extends RealmObject {
 
     public void setMateriais(RealmList<Material> materiais) {
         this.materiais = materiais;
+    }
+
+    public void setUltimaTroca(float ultimaTroca) {
+        this.ultimaTroca = ultimaTroca;
+    }
+
+    public float getUltimaTroca() {
+        return ultimaTroca;
     }
 }

@@ -8,13 +8,17 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Transporte extends RealmObject {
 
+    public static final String ID = "br.com.jortec.jorliano.transporte.dominio.Transporte.ID";
+
     @PrimaryKey
     private long id;
     private String modelo;
     private String marca;
+    private int tipo;
     private int ano;
     private double km;
     private double potencia;
+    private int imagem;
 
 
     public long getId() {
@@ -63,5 +67,22 @@ public class Transporte extends RealmObject {
 
     public void setPotencia(double potencia) {
         this.potencia = potencia;
+    }
+
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public int getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(int imagem) {
+        this.imagem = imagem;
     }
 }

@@ -25,7 +25,7 @@
             android:label="@string/title_activity_cadastro_analise" >
         </activity>
         <activity
-            android:name=".MateriaActivity"
+            android:name=".MaterialActivity"
             android:label="@string/title_activity_materia" >
         </activity>
         <activity

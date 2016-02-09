@@ -5,15 +5,18 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import java.util.Date;
 
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
 import io.realm.Realm;
@@ -23,7 +26,8 @@ import io.realm.Sort;
 public class CadastroServicosActivity extends AppCompatActivity {
     private EditText edtDescricao;
     private EditText edtProximaTroca;
-    private EditText edtPeriodo;
+    private EditText edtUltimaTroca;
+    private Spinner spPeriodo;
     private ImageView tbImagem;
     private Button btSalvar;
     private Button btTroca;
@@ -41,6 +45,7 @@ public class CadastroServicosActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
         servicos = realm.where(Servicos.class).findAll();
+        servico = new Servicos();
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle( "Serviço");
@@ -52,10 +57,28 @@ public class CadastroServicosActivity extends AppCompatActivity {
 
         edtDescricao = (EditText) findViewById(R.id.edt_descricao);
         edtProximaTroca = (EditText) findViewById(R.id.edt_proximaTroca);
-        edtPeriodo = (EditText) findViewById(R.id.edt_periodo);
+        edtUltimaTroca = (EditText) findViewById(R.id.edt_ultimaTroca);
+        spPeriodo = (Spinner) findViewById(R.id.sp_periodo);
         tbImagem = (ImageView) findViewById(R.id.tb_imagem);
         btSalvar = (Button) findViewById(R.id.bt_salver);
         btTroca = (Button) findViewById(R.id.bt_troca);
+
+        String opSpinner [] = {"1.000", "2.000", "3.000", "4.000", "5.000"};
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opSpinner);
+        spPeriodo.setAdapter(adp);
+
+        if(getIntent() != null && getIntent().getLongExtra(Servicos.ID,0) > 0){
+            servico.setId(getIntent().getLongExtra(Servicos.ID, 0));
+
+            servico = realm.where(Servicos.class).equalTo("id",servico.getId()).findFirst();
+
+            edtDescricao.setText(servico.getDescricao());
+            edtProximaTroca.setText(String.valueOf(servico.getProximaTroca()));
+            edtUltimaTroca.setText(String.valueOf(servico.getUltimaTroca()));
+            spPeriodo.setSelection(servico.getPeriodo());
+            tbImagem.setImageResource((int) servico.getImagem());
+            btSalvar.setText("Atualizar");
+        }
 
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +100,7 @@ public class CadastroServicosActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(id > 0){
 
-                    Intent intent = new Intent(v.getContext(),MateriaActivity.class);
+                    Intent intent = new Intent(v.getContext(),MaterialActivity.class);
                     intent.putExtra("id","");
                     startActivity(intent);
 
@@ -91,18 +114,21 @@ public class CadastroServicosActivity extends AppCompatActivity {
 
     public void preencerDados(){
 
-        servico = new Servicos();
-        //gerando id
-        servicos.sort("id", Sort.DESCENDING);
-        long id = servicos.size() == 0 ? 1 : servicos.get(0).getId() +1 ;
-        servico.setId(id);
+        if(servico.getId() == 0) {
+            //gerando id
+            servicos.sort("id", Sort.DESCENDING);
+            long id = servicos.size() == 0 ? 1 : servicos.get(0).getId() + 1;
+            servico.setId(id);
+        }
 
         servico.setDescricao(edtDescricao.getText().toString());
-        servico.setProximaTroca(Float.parseFloat(edtProximaTroca.getText().toString()));
-        servico.setPeriodo(Integer.parseInt(edtPeriodo.getText().toString()));
-        servico.setData("10/10/2100");
-        //analise.setSubTitulo();
+        servico.setUltimaTroca(Float.parseFloat(edtUltimaTroca.getText().toString()));
+        servico.setPeriodo(spPeriodo.getSelectedItemPosition());
+        servico.setProximaTroca(servico.getUltimaTroca() + servico.getPeriodo());
+        servico.setData(new Date());
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,10 +145,13 @@ public class CadastroServicosActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home) {
+            finish();
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
+
+
+
 }

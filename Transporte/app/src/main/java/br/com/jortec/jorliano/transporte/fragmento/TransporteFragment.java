@@ -18,12 +18,20 @@ import android.widget.Toast;
 
 import br.com.jortec.jorliano.transporte.CadastroTransporteActivity;
 import br.com.jortec.jorliano.transporte.R;
+import br.com.jortec.jorliano.transporte.dominio.Transporte;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Jorliano on 03/02/2016.
  */
+
 public class TransporteFragment extends Fragment {
+    Realm realm;
+    RealmResults<Transporte> transportes;
+
     FloatingActionButton fab;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,13 +44,20 @@ public class TransporteFragment extends Fragment {
         TextView tvPotencia = (TextView) view.findViewById(R.id.tv_potencia);
         ImageView ivToolbar = (ImageView) view.findViewById(R.id.imagem);
 
+        realm = Realm.getDefaultInstance();
+        transportes = realm.where(Transporte.class).findAll();
 
-        tvMarca.setText("Renault");
-        tvModelo.setText("Sandero");
-        tvAno.setText("2012");
-        tvKm.setText("30.000km");
-        tvPotencia.setText("2.0 cc");
-        ivToolbar.setImageDrawable(getResources().getDrawable(R.drawable.sandeiro));
+        if(transportes.size() > 0){
+            tvMarca.setText(transportes.get(0).getMarca());
+            tvModelo.setText(transportes.get(0).getModelo());
+            tvAno.setText(String.valueOf(transportes.get(0).getAno()));
+            tvKm.setText(String.valueOf(transportes.get(0).getKm()));
+            tvPotencia.setText(String.valueOf(transportes.get(0).getPotencia()));
+            ivToolbar.setImageResource(transportes.get(0).getImagem());
+
+        }else {
+            startActivity(new Intent(view.getContext(), CadastroTransporteActivity.class));
+        }
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
@@ -50,7 +65,7 @@ public class TransporteFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(view.getContext(), CadastroTransporteActivity.class).putExtra("id",""));
+                startActivity(new Intent(view.getContext(), CadastroTransporteActivity.class).putExtra(Transporte.ID,transportes.get(0).getId()));
             }
         });
 

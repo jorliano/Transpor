@@ -75,48 +75,64 @@
 
 
             <TableLayout
+                android:id="@+id/tb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tb"
                 android:layout_marginTop="10dp">
 
-                <TableRow
-                    android:id="@+id/tableRow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dip">
 
-                    <TextView
-                        android:id="@+id/tv_transporte"
+                <RadioGroup
+                    android:id="@+id/rgTipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_span="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbCarro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Transporte"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:checked="true"
+                        android:text="Carro" />
 
-                    <Spinner
-                        android:id="@+id/sp_transporte"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:id="@+id/rbMoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Moto" />
 
-                </TableRow>
+                    <RadioButton
+                        android:id="@+id/rbCaminhao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Caminhão" />
+
+                    <RadioButton
+                        android:id="@+id/rbAviao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avião" />
+                </RadioGroup>
+
+
                 <!-- 2 columns -->
                 <TableRow
                     android:id="@+id/tableRow1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dip" >
+                    android:padding="5dip">
 
                     <TextView
+                        android:id="@+id/tv_titulo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Modelo"
-                        android:id="@+id/tv_titulo"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
+                        android:id="@+id/edt_modelo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/edt_modelo"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </TableRow>
@@ -125,7 +141,7 @@
                     android:id="@+id/tableRow2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dip" >
+                    android:padding="5dip">
 
                     <TextView
                         android:id="@+id/textView2"
@@ -133,9 +149,9 @@
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
+                        android:id="@+id/edt_marca"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/edt_marca"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </TableRow>
@@ -144,7 +160,7 @@
                     android:id="@+id/tableRow3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dip" >
+                    android:padding="5dip">
 
                     <TextView
                         android:id="@+id/textView3"
@@ -152,9 +168,9 @@
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
+                        android:id="@+id/edt_ano"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/edt_ano"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </TableRow>
@@ -163,7 +179,7 @@
                     android:id="@+id/tableRow4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dip" >
+                    android:padding="5dip">
 
                     <TextView
                         android:id="@+id/textView4"
@@ -171,9 +187,9 @@
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
+                        android:id="@+id/edt_km"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/edt_km"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </TableRow>
@@ -182,7 +198,7 @@
                     android:id="@+id/tableRow5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dip" >
+                    android:padding="5dip">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -190,9 +206,9 @@
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <EditText
+                        android:id="@+id/edt_potencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/edt_potencia"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </TableRow>
@@ -201,7 +217,7 @@
             </TableLayout>
 
             <Button
-                android:id="@+id/bt_salver"
+                android:id="@+id/bt_salvar_transporte"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
@@ -216,7 +232,6 @@
                 android:text="Salvar"
                 android:textColor="#1d80f0"
                 android:textSize="16sp" />
-
 
 
         </RelativeLayout>
