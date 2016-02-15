@@ -1,6 +1,9 @@
 package br.com.jortec.jorliano.transporte.dominio;
 
-import java.lang.String;import io.realm.RealmObject;
+import java.lang.String;
+import java.util.Date;
+
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -10,9 +13,10 @@ public class Material extends RealmObject {
 
     @PrimaryKey
     private long id;
-    private String nome;
     private String descricao;
     private double valor;
+    private Date data;
+    private Date dataTroca;
 
 
     public long getId() {
@@ -21,14 +25,6 @@ public class Material extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -45,5 +41,21 @@ public class Material extends RealmObject {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public Date getDataTroca() {
+        return dataTroca;
+    }
+
+    public void setDataTroca(Date dataTroca) {
+        this.dataTroca = dataTroca;
     }
 }

@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView
-        android:id="@+id/realm_recycler_configuracao"
+        android:id="@+id/realm_recycler_service"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:rrvGridLayoutSpanCount="1"
         app:rrvIsRefreshable="false"
-        app:rrvLayoutType="Grid" />
+        app:rrvLayoutType="LinearLayout"
+        />
 
 </FrameLayout>

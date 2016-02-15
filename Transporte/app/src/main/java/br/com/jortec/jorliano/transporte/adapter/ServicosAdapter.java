@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import br.com.jortec.jorliano.transporte.R;
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
+import br.com.jortec.jorliano.transporte.extras.Formate;
 import br.com.jortec.jorliano.transporte.interfaces.RecyclerViewOnclickListener;
 import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
@@ -24,10 +25,13 @@ public class ServicosAdapter extends RealmBasedRecyclerViewAdapter<Servicos,
                                      ServicosAdapter.ViewHolder> {
 
     private RecyclerViewOnclickListener recyclerViewOnclickListener;
+    private String layout = "cardview";
 
     public ServicosAdapter(Context ccontext, RealmResults<Servicos> realmResults,
-                           boolean automaticUpdate, boolean animacaoTipo){
+                           boolean automaticUpdate, boolean animacaoTipo, String layout){
         super(ccontext, realmResults, automaticUpdate, animacaoTipo);
+
+        this.layout = layout;
     }
 
     public class ViewHolder extends RealmViewHolder implements View.OnClickListener{
@@ -62,7 +66,16 @@ public class ServicosAdapter extends RealmBasedRecyclerViewAdapter<Servicos,
 
     @Override
     public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = inflater.inflate(R.layout.item_cardiview_servicos, viewGroup, false);
+        View v = null;
+
+        if(layout.equals("cardview")){
+            v = inflater.inflate(R.layout.item_cardiview_servicos, viewGroup, false);
+        }
+        else if(layout.equals("recyclerview")){
+            v = inflater.inflate(R.layout.item_recyclerview_busca, viewGroup, false);
+        }
+
+
         ViewHolder vh = new ViewHolder((LinearLayout) v);
         return vh;
     }
@@ -74,7 +87,7 @@ public class ServicosAdapter extends RealmBasedRecyclerViewAdapter<Servicos,
         Servicos servicos = realmResults.get(position);
         viewHolder.descricao.setText(servicos.getDescricao());
         viewHolder.periodo.setText("periodo "+(servicos.getPeriodo()+1)+".000 km");
-        viewHolder.proximaTroca.setText("prox.troca "+servicos.getProximaTroca()+" km");
-        viewHolder.image.setImageResource(R.drawable.sandeiro);
+        viewHolder.proximaTroca.setText("prox.troca "+ Formate.intParaKm(servicos.getProximaTroca())+" km");
+        viewHolder.image.setImageResource(servicos.getImagem());
     }
 }

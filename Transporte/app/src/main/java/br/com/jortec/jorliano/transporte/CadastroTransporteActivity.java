@@ -14,6 +14,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
 import br.com.jortec.jorliano.transporte.dominio.Transporte;
 import io.realm.Realm;
@@ -36,6 +38,7 @@ public class CadastroTransporteActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     Transporte transporte;
     long id;
+    int imagemSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,28 @@ public class CadastroTransporteActivity extends AppCompatActivity {
         rgTipo = (RadioGroup) findViewById(R.id.rgTipo);
         imagem = (ImageView) findViewById(R.id.tb_imagem);
         btSalvar = (Button) findViewById(R.id.bt_salvar_transporte);
+
+        rgTipo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId){
+                    case R.id.rb_carro:  imagem.setImageResource(R.drawable.carro);
+                        imagemSelecionada = R.drawable.carro;
+                        break;
+                    case R.id.rb_moto: imagem.setImageResource(R.drawable.moto);
+                        imagemSelecionada = R.drawable.moto;
+                        break;
+                    case R.id.rb_caminhao: imagem.setImageResource(R.drawable.caminao);
+                        imagemSelecionada = R.drawable.caminao;
+                        break;
+                    case R.id.rb_aviao: imagem.setImageResource(R.drawable.aviao);
+                        imagemSelecionada = R.drawable.aviao;
+                        break;
+                }
+
+            }
+        });
 
         transporte = new Transporte();
 
@@ -89,8 +114,45 @@ public class CadastroTransporteActivity extends AppCompatActivity {
                     preencherDados(transporte);
                     realm.copyToRealmOrUpdate(transporte);
                     realm.commitTransaction();
+                    //realm.close();
+
+                    if(getIntent().getLongExtra(Transporte.ID, 0) == 0){
+
+                        Transporte tranporte = realm.where(Transporte.class).findFirst();
+                        String descricao = "Oleo";
+                        int img = R.drawable.oleo;
+
+                        for (int i = 0 ; i < 3; i++) {
+                            realm.beginTransaction();
+                            Servicos servico = new Servicos();
+
+                            servico.setId(i + 1);
+                            servico.setDescricao(descricao);
+                            servico.setUltimaTroca(tranporte.getKm());
+                            servico.setPeriodo(1);
+                            servico.setProximaTroca(servico.getUltimaTroca() + (servico.getPeriodo() * 1000));
+                            servico.setData(new Date());
+                            servico.setImagem(img);
+
+
+                            realm.copyToRealmOrUpdate(servico);
+                            realm.commitTransaction();
+
+                            if(i == 0){
+                                descricao =  "Pneu";
+                                img = R.drawable.roda;
+                            }else
+                                if(i == 1){
+                                    descricao =  "Manutenção";
+                                    img = R.drawable.manutencao;
+                                }
+
+
+                        }
+                    }
 
                     Toast.makeText(v.getContext(), "Dados salvo", Toast.LENGTH_SHORT).show();
+
                     finish();
                 } catch (Exception e) {
                     Toast.makeText(v.getContext(), "erro " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -112,10 +174,10 @@ public class CadastroTransporteActivity extends AppCompatActivity {
         transporte.setModelo(modelo.getText().toString());
         transporte.setMarca(marca.getText().toString());
         transporte.setAno(Integer.parseInt(ano.getText().toString()));
-        transporte.setKm(Double.parseDouble(km.getText().toString()));
+        transporte.setKm(Integer.parseInt(km.getText().toString()));
         transporte.setPotencia(Double.parseDouble(potencia.getText().toString()));
         transporte.setTipo(rgTipo.getCheckedRadioButtonId());
-        transporte.setImagem(R.drawable.sandeiro);
+        transporte.setImagem(imagemSelecionada);
 
         return transporte;
     }

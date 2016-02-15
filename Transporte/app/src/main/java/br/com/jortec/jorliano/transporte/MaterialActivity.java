@@ -2,6 +2,7 @@ package br.com.jortec.jorliano.transporte;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ActionMenuView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -18,11 +20,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import br.com.jortec.jorliano.transporte.dominio.Material;
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
+import br.com.jortec.jorliano.transporte.extras.Formate;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -31,8 +35,7 @@ public class MaterialActivity extends AppCompatActivity {
     private TextView tvTitulo;
     private TextView tvData;
     private EditText edtValor;
-    private Button btSalvar;
-    private Button btAdd;
+    private ImageButton btAdd;
 
     Realm realm;
     RealmResults<Servicos> servicos;
@@ -44,14 +47,19 @@ public class MaterialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_materia);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.material_toolbar);
+        toolbar.setTitle("Material");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         tvTitulo = (TextView) findViewById(R.id.tv_title);
         tvData = (TextView) findViewById(R.id.edt_data);
-        btSalvar = (Button) findViewById(R.id.bt_salvar);
-        btAdd = (Button) findViewById(R.id.bt_add);
+        btAdd = (ImageButton) findViewById(R.id.bt_add);
 
         realm = Realm.getDefaultInstance();
         servicos = realm.where(Servicos.class).findAll();
+        servico = new Servicos();
 
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,38 +75,22 @@ public class MaterialActivity extends AppCompatActivity {
 
             servico = servicos.where().equalTo("id", servico.getId()).findAll().get(0);
             tvTitulo.setText(servico.getDescricao());
-            tvData.setText(String.valueOf( servico.getData()));
-            btSalvar.setText("Atualizar");
+            tvData.setText(Formate.dataParaString(new Date()));
 
-            for (Material m :servico.getMateriais()) {
-                addMaterialsParaView(findViewById(R.id.bt_add), m);
-            }
+            if(getIntent().getBooleanExtra(Servicos.PESQUISA, false) == true ){
 
-            removeMaterialDaView(findViewById(R.id.bt_remove));
+                //CARREGAR DADOS DA PESQUISA
+                if(servico.getMateriais().size() > 0){
+                    for (Material m :servico.getMateriais()) {
+                        addMaterialsParaView(findViewById(R.id.bt_add), m);
+                    }
 
-        }
-
-        btSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String label = "Atualizado";
-
-                try {
-
-                    realm.beginTransaction();
-                    servico.getMateriais().clear();
-                    servico.getMateriais().addAll(getListaNotasView(v, servicos));
-                    realm.commitTransaction();
-
-                    Toast.makeText(v.getContext(), label + " com sucesso ", Toast.LENGTH_SHORT).show();
-                    finish();
-
-                } catch (Exception e) {
-                    Log.i("id estudante erro ", "" + servico.getId());
-                    Toast.makeText(v.getContext(), "falhou " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    removeMaterialDaView(findViewById(R.id.bt_remove));
                 }
             }
-        });
+
+
+        }
 
 
     }
@@ -160,11 +152,12 @@ public class MaterialActivity extends AppCompatActivity {
                         if (realm.where(Material.class).findAll().size() > 0) {
                             m.setId(realm.where(Material.class).findAll().where().findAllSorted("id", Sort.DESCENDING).get(0).getId() + 1 + j);
                         } else {
-                            m.setId(1);
+                            m.setId(i);
                         }
 
                         m.setDescricao(edtMaterial.getText().toString());
-                        m.setValor(Double.parseDouble(edtValor.getText().toString()));
+                        m.setValor(Formate.MonetarioParaDouble(edtValor.getText().toString()));
+                        m.setData(Formate.stringParaData(tvData.getText().toString()));
 
                         lista.add(m);
                     }
@@ -198,10 +191,34 @@ public class MaterialActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home) {
+            finish();
+        }
+        else if (id == R.id.save_menu){
+            String label = "Salvar";
+
+            try {
+
+                realm.beginTransaction();
+                servico.setUltimaTroca(servico.getProximaTroca());
+                servico.setProximaTroca(servico.getUltimaTroca() + ((servico.getPeriodo()+1) * 1000));
+                realm.copyToRealmOrUpdate(servico);
+                realm.commitTransaction();
+
+                realm.beginTransaction();
+                servico.getMateriais().clear();
+                servico.getMateriais().addAll(getListaNotasView(tvTitulo, servicos));
+                realm.commitTransaction();
+
+                Toast.makeText(this, label + " com sucesso ", Toast.LENGTH_SHORT).show();
+                finish();
+
+            } catch (Exception e) {
+                Log.i("id estudante erro ", "" + servico.getId());
+                Toast.makeText(this, "falhou " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

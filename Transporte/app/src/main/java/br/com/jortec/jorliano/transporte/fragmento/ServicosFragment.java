@@ -1,24 +1,21 @@
 package br.com.jortec.jorliano.transporte.fragmento;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import br.com.jortec.jorliano.transporte.CadastroServicosActivity;
 import br.com.jortec.jorliano.transporte.R;
-import br.com.jortec.jorliano.transporte.adapter.ServicoAdapter;
 import br.com.jortec.jorliano.transporte.adapter.ServicosAdapter;
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
+import br.com.jortec.jorliano.transporte.dominio.Transporte;
 import br.com.jortec.jorliano.transporte.interfaces.RecyclerViewOnclickListener;
 import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
 import io.realm.Realm;
@@ -31,6 +28,7 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
     RealmRecyclerView realmRecyclerView;
     Realm realm;
     RealmResults<Servicos> servicos;
+    Transporte transporte;
     FloatingActionButton fab;
 
 
@@ -42,14 +40,14 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
 
         realm = Realm.getDefaultInstance();
         servicos = realm.where(Servicos.class).findAll();
+        transporte = realm.where(Transporte.class).findFirst();
 
-        ServicosAdapter adapter = new ServicosAdapter(view.getContext(), servicos, true, true);
+        ServicosAdapter adapter = new ServicosAdapter(view.getContext(), servicos, true, true, "cardview");
         adapter.setRecyclerViewOnclickListener(this);
         realmRecyclerView.setAdapter(adapter);
 
 
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+        fab = (FloatingActionButton) view.findViewById(R.id.fab_service);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +60,37 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
     @Override
     public void onclickListener(View view, int position) {
 
-       startActivity(new Intent(view.getContext(),CadastroServicosActivity.class)
-                         .putExtra(Servicos.ID, servicos.get(position).getId()));
+       startActivity(new Intent(view.getContext(), CadastroServicosActivity.class)
+               .putExtra(Servicos.ID, servicos.get(position).getId()));
     }
+
+    public void carregarServiços(int km){
+
+
+        String descricao = "Oleo";
+        int img = R.drawable.oleo;
+
+        for (int i = 0; i < 3;i ++){
+            realm.beginTransaction();
+            Servicos servico = new Servicos();
+
+            servico.setId(i);
+            servico.setDescricao(descricao);
+            servico.setUltimaTroca(km);
+            servico.setPeriodo(1);
+            servico.setProximaTroca(servico.getUltimaTroca() + (servico.getPeriodo() * 1000));
+            servico.setData(new Date());
+            servico.setImagem(img);
+
+
+            realm.copyToRealmOrUpdate(servico);
+            realm.commitTransaction();
+            realm.close();
+
+            descricao = descricao.equals("Oleo") ? "Manutenção" : "Pneu";
+            img = img == R.drawable.oleo ? R.drawable.manutencao : R.drawable.roda;
+        }
+    }
+
+
 }

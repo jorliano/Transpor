@@ -87,12 +87,12 @@
                     android:layout_height="wrap_content"
                     android:padding="5dip" >
 
-                    <TextView
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Descricao"
+                        android:src="@drawable/account"
                         android:id="@+id/tv_titulo"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:layout_marginRight="30dp"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -101,8 +101,7 @@
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:hint="Descrição"
-                        android:inputType="text"
-                        android:maxLength="40" />
+                        android:inputType="text"/>
                 </TableRow>
                 <!-- 2 columns -->
                 <TableRow
@@ -111,10 +110,12 @@
                     android:layout_height="wrap_content"
                     android:padding="5dip" >
 
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:text="Ultm.Troca"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/autorenew"
+                        android:id="@+id/iv"
+                        android:layout_marginRight="30dp"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -132,10 +133,12 @@
                     android:layout_height="wrap_content"
                     android:padding="5dip" >
 
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:text="Periodo"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/timetable"
+                        android:id="@+id/iv2"
+                        android:layout_marginRight="30dp"/>
 
                     <Spinner
                         android:layout_width="match_parent"
@@ -152,10 +155,12 @@
                     android:layout_height="wrap_content"
                     android:padding="5dip" >
 
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:text="Prox.Troca"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/autorenew"
+                        android:id="@+id/iv3"
+                        android:layout_marginRight="30dp"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -166,7 +171,8 @@
                         android:inputType="numberDecimal"
                         android:hint="Próxima troca"
                         android:numeric="decimal"
-                        android:editable="true" />
+                        android:enabled="false"
+                        />
                 </TableRow>
 
 

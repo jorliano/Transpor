@@ -36,7 +36,6 @@ public class CadastroServicosActivity extends AppCompatActivity {
     Realm realm;
     Servicos servico;
     RealmResults<Servicos> servicos;
-    int id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +66,8 @@ public class CadastroServicosActivity extends AppCompatActivity {
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opSpinner);
         spPeriodo.setAdapter(adp);
 
+        btTroca.setVisibility(View.GONE);
+
         if(getIntent() != null && getIntent().getLongExtra(Servicos.ID,0) > 0){
             servico.setId(getIntent().getLongExtra(Servicos.ID, 0));
 
@@ -78,6 +79,7 @@ public class CadastroServicosActivity extends AppCompatActivity {
             spPeriodo.setSelection(servico.getPeriodo());
             tbImagem.setImageResource((int) servico.getImagem());
             btSalvar.setText("Atualizar");
+            btTroca.setVisibility(View.VISIBLE);
         }
 
         btSalvar.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +100,10 @@ public class CadastroServicosActivity extends AppCompatActivity {
         btTroca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(id > 0){
+                if(servico.getId() > 0){
 
                     Intent intent = new Intent(v.getContext(),MaterialActivity.class);
-                    intent.putExtra("id","");
+                    intent.putExtra(Servicos.ID, servico.getId());
                     startActivity(intent);
 
                 }else{
@@ -122,9 +124,9 @@ public class CadastroServicosActivity extends AppCompatActivity {
         }
 
         servico.setDescricao(edtDescricao.getText().toString());
-        servico.setUltimaTroca(Float.parseFloat(edtUltimaTroca.getText().toString()));
+        servico.setUltimaTroca(Integer.parseInt(edtUltimaTroca.getText().toString()));
         servico.setPeriodo(spPeriodo.getSelectedItemPosition());
-        servico.setProximaTroca(servico.getUltimaTroca() + servico.getPeriodo());
+        servico.setProximaTroca(servico.getUltimaTroca() + ((servico.getPeriodo() + 1) * 1000));
         servico.setData(new Date());
 
     }
@@ -151,7 +153,6 @@ public class CadastroServicosActivity extends AppCompatActivity {
 
         return true;
     }
-
 
 
 }

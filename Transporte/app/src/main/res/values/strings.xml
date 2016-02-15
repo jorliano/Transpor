@@ -13,4 +13,5 @@
     <string name="title_activity_cadastro_analise">CadastroAnaliseActivity</string>
     <string name="title_activity_materia">MateriaActivity</string>
     <string name="title_activity_cadastro_transporte_">cadastro_transporte_Activity</string>
+    <string name="title_activity_pesquisa">PesquisaActivity</string>
 </resources>

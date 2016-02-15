@@ -32,6 +32,10 @@
             android:name=".CadastroTransporteActivity"
             android:label="@string/title_activity_cadastro_transporte_" >
         </activity>
+        <activity
+            android:name=".PesquisaActivity"
+            android:label="@string/title_activity_pesquisa" >
+        </activity>
     </application>
 
 </manifest>

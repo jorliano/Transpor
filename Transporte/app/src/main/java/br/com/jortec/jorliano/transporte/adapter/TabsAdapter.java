@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import br.com.jortec.jorliano.transporte.fragmento.ConfiguracaoFragment;
+import br.com.jortec.jorliano.transporte.fragmento.BuscaFragment;
 import br.com.jortec.jorliano.transporte.fragmento.ServicosFragment;
 import br.com.jortec.jorliano.transporte.fragmento.SobreFragment;
 import br.com.jortec.jorliano.transporte.fragmento.TransporteFragment;
@@ -17,7 +17,7 @@ import br.com.jortec.jorliano.transporte.fragmento.TransporteFragment;
 
 public class TabsAdapter extends FragmentPagerAdapter {
     private Context context;
-    private String[] titulos = {"INICIO","SERVIÇOS","CONFIGURAÇÃO","SOBRE"};
+    private String[] titulos = {"INICIO","SERVIÇOS","BUSCA","SOBRE"};
 
     public TabsAdapter(FragmentManager fm, Context c) {
         super(fm);
@@ -39,8 +39,8 @@ public class TabsAdapter extends FragmentPagerAdapter {
         else if(position == 1){ // PEÇAS
             frag = new ServicosFragment();
         }
-        else if(position == 2){ // CONFIGURAÇÃO
-            frag = new ConfiguracaoFragment();
+        else if(position == 2){ // BUSCA
+            frag = new BuscaFragment();
         }
         else if(position == 3){ // SOBRE
             frag = new SobreFragment();

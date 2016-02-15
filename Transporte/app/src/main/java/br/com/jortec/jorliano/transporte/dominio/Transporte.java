@@ -1,5 +1,7 @@
 package br.com.jortec.jorliano.transporte.dominio;
 
+import android.content.res.Resources;
+
 import java.lang.String;import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -16,7 +18,7 @@ public class Transporte extends RealmObject {
     private String marca;
     private int tipo;
     private int ano;
-    private double km;
+    private int km;
     private double potencia;
     private int imagem;
 
@@ -53,11 +55,11 @@ public class Transporte extends RealmObject {
         this.ano = ano;
     }
 
-    public double getKm() {
+    public int getKm() {
         return km;
     }
 
-    public void setKm(double km) {
+    public void setKm(int km) {
         this.km = km;
     }
 

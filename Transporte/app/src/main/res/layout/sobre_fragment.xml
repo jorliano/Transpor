@@ -16,7 +16,7 @@
             android:id="@+id/image"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:src="@drawable/sandeiro"/>
+            android:src="@drawable/sobre"/>
 
         <TextView
             android:id="@+id/app"
@@ -35,16 +35,16 @@
 
     </android.support.v7.widget.CardView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="180dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/texto"
             android:layout_width="fill_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="32dp"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -53,8 +53,25 @@
             android:textColor="@color/colorPrimaryText"
             android:alpha="0.8"
             android:textSize="@dimen/abc_text_size_headline_material"
-            android:text="Test"/>
+            android:text="Test"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Compartilhar"
+            android:textColor="@color/material_drawer_dark_selected_text"
+            android:background="@android:drawable/screen_background_light_transparent"
+            android:layout_gravity="bottom|end"
+            android:layout_marginRight="37dp"
+            android:layout_marginEnd="37dp"
+            android:layout_below="@+id/texto"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="28dp" />
+
+    </RelativeLayout>
 
 </FrameLayout>

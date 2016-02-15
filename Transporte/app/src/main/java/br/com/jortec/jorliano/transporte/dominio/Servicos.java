@@ -11,15 +11,17 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Servicos extends RealmObject {
     public static final String ID = "br.com.jortec.jorliano.transporte.dominio.servico.ID";
+    public static final String PESQUISA = "br.com.jortec.jorliano.transporte.dominio.servico.PESQUISA";
+
 
     @PrimaryKey
     private long id;
     private String descricao;
     private Date data;
-    private Float proximaTroca;
-    private float ultimaTroca;
+    private int proximaTroca;
+    private int ultimaTroca;
     private int periodo;
-    private long imagem;
+    private int imagem;
     private RealmList<Material> materiais;
 
 
@@ -47,11 +49,11 @@ public class Servicos extends RealmObject {
         this.data = data;
     }
 
-    public Float getProximaTroca() {
+    public int getProximaTroca() {
         return proximaTroca;
     }
 
-    public void setProximaTroca(Float proximaTroca) {
+    public void setProximaTroca(int proximaTroca) {
         this.proximaTroca = proximaTroca;
     }
 
@@ -63,11 +65,11 @@ public class Servicos extends RealmObject {
         this.periodo = periodo;
     }
 
-    public long getImagem() {
+    public int getImagem() {
         return imagem;
     }
 
-    public void setImagem(long imagem) {
+    public void setImagem(int imagem) {
         this.imagem = imagem;
     }
 
@@ -79,11 +81,11 @@ public class Servicos extends RealmObject {
         this.materiais = materiais;
     }
 
-    public void setUltimaTroca(float ultimaTroca) {
+    public void setUltimaTroca(int ultimaTroca) {
         this.ultimaTroca = ultimaTroca;
     }
 
-    public float getUltimaTroca() {
+    public int getUltimaTroca() {
         return ultimaTroca;
     }
 }
