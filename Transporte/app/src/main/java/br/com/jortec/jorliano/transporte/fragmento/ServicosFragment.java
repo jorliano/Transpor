@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import br.com.jortec.jorliano.transporte.dominio.Servicos;
 import br.com.jortec.jorliano.transporte.dominio.Transporte;
 import br.com.jortec.jorliano.transporte.interfaces.RecyclerViewOnclickListener;
 import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
+import de.greenrobot.event.EventBus;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -42,6 +45,11 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
         servicos = realm.where(Servicos.class).findAll();
         transporte = realm.where(Transporte.class).findFirst();
 
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
+
         ServicosAdapter adapter = new ServicosAdapter(view.getContext(), servicos, true, true, "cardview");
         adapter.setRecyclerViewOnclickListener(this);
         realmRecyclerView.setAdapter(adapter);
@@ -51,7 +59,14 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(view.getContext(), CadastroServicosActivity.class));
+                Fragment fr = new ImagensServicoFragment();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.cll, fr);
+                fragmentTransaction.commit();
+
+
+               // startActivity(new Intent(view.getContext(), CadastroServicosActivity.class));
             }
         });
         return view;
@@ -60,9 +75,20 @@ public class ServicosFragment extends Fragment implements RecyclerViewOnclickLis
     @Override
     public void onclickListener(View view, int position) {
 
-       startActivity(new Intent(view.getContext(), CadastroServicosActivity.class)
-               .putExtra(Servicos.ID, servicos.get(position).getId()));
+      startActivity(new Intent(view.getContext(), CadastroServicosActivity.class)
+             .putExtra(Servicos.ID, servicos.get(position).getId()));
     }
+
+    //LISTENER
+    public void onEvent(Servicos s) {
+        servicos = realm.where(Servicos.class).findAll();
+       // realmRecyclerView.notifyAll();
+        ServicosAdapter adapter = new ServicosAdapter(getContext(), servicos, true, true, "cardview");
+        adapter.setRecyclerViewOnclickListener(this);
+       realmRecyclerView.setAdapter(adapter);
+
+    };
+
 
     public void carregarServiços(int km){
 

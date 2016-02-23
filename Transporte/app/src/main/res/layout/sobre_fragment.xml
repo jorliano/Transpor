@@ -58,20 +58,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="Compartilhar"
-            android:textColor="@color/material_drawer_dark_selected_text"
-            android:background="@android:drawable/screen_background_light_transparent"
-            android:layout_gravity="bottom|end"
-            android:layout_marginRight="37dp"
-            android:layout_marginEnd="37dp"
-            android:layout_below="@+id/texto"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="28dp" />
-
     </RelativeLayout>
 
 </FrameLayout>

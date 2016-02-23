@@ -101,7 +101,7 @@ public class MaterialActivity extends AppCompatActivity {
 
         EditText edtNome  = (EditText) llCuild.findViewById(R.id.edt_material);
         EditText edtValor = (EditText) llCuild.findViewById(R.id.edt_valor);
-        Button btRemove = (Button) llCuild.findViewById(R.id.bt_remove);
+        ImageButton btRemove = (ImageButton) llCuild.findViewById(R.id.bt_remove);
 
         if (material != null) { //Atualizar
             edtNome.setText(String.valueOf(material.getDescricao()));
@@ -206,7 +206,6 @@ public class MaterialActivity extends AppCompatActivity {
                 realm.commitTransaction();
 
                 realm.beginTransaction();
-                servico.getMateriais().clear();
                 servico.getMateriais().addAll(getListaNotasView(tvTitulo, servicos));
                 realm.commitTransaction();
 

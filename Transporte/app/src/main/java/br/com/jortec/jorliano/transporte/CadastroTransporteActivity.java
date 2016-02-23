@@ -18,6 +18,7 @@ import java.util.Date;
 
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
 import br.com.jortec.jorliano.transporte.dominio.Transporte;
+import de.greenrobot.event.EventBus;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -38,7 +39,7 @@ public class CadastroTransporteActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     Transporte transporte;
     long id;
-    int imagemSelecionada;
+    int imagemSelecionada = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class CadastroTransporteActivity extends AppCompatActivity {
 
             transporte = transportes.where().equalTo("id", transporte.getId()).findFirst();
 
+
             modelo.setText(transporte.getModelo());
             marca.setText(transporte.getMarca());
             ano.setText(String.valueOf(transporte.getAno()));
@@ -101,6 +103,7 @@ public class CadastroTransporteActivity extends AppCompatActivity {
             potencia.setText(String.valueOf(transporte.getPotencia()));
             rgTipo.check(transporte.getTipo());
             imagem.setImageResource(transporte.getImagem());
+
 
             btSalvar.setText("Atualizar");
         }
@@ -110,52 +113,54 @@ public class CadastroTransporteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    realm.beginTransaction();
-                    preencherDados(transporte);
-                    realm.copyToRealmOrUpdate(transporte);
-                    realm.commitTransaction();
-                    //realm.close();
 
-                    if(getIntent().getLongExtra(Transporte.ID, 0) == 0){
+                    if(validarCampos()) {
+                        realm.beginTransaction();
+                        preencherDados(transporte);
+                        realm.copyToRealmOrUpdate(transporte);
+                        realm.commitTransaction();
 
-                        Transporte tranporte = realm.where(Transporte.class).findFirst();
-                        String descricao = "Oleo";
-                        int img = R.drawable.oleo;
+                        //Script de serviços
+                        if (getIntent().getLongExtra(Transporte.ID, 0) == 0) {
 
-                        for (int i = 0 ; i < 3; i++) {
-                            realm.beginTransaction();
-                            Servicos servico = new Servicos();
+                            Transporte tranporte = realm.where(Transporte.class).findFirst();
+                            String descricao = "Oleo";
+                            int img = R.drawable.oleo;
 
-                            servico.setId(i + 1);
-                            servico.setDescricao(descricao);
-                            servico.setUltimaTroca(tranporte.getKm());
-                            servico.setPeriodo(1);
-                            servico.setProximaTroca(servico.getUltimaTroca() + (servico.getPeriodo() * 1000));
-                            servico.setData(new Date());
-                            servico.setImagem(img);
+                            for (int i = 0; i < 3; i++) {
+                                realm.beginTransaction();
+                                Servicos servico = new Servicos();
+
+                                servico.setId(i + 1);
+                                servico.setDescricao(descricao);
+                                servico.setUltimaTroca(tranporte.getKm());
+                                servico.setPeriodo(1);
+                                servico.setProximaTroca(servico.getUltimaTroca() + (servico.getPeriodo() * 1000));
+                                servico.setData(new Date());
+                                servico.setImagem(img);
 
 
-                            realm.copyToRealmOrUpdate(servico);
-                            realm.commitTransaction();
+                                realm.copyToRealmOrUpdate(servico);
+                                realm.commitTransaction();
 
-                            if(i == 0){
-                                descricao =  "Pneu";
-                                img = R.drawable.roda;
-                            }else
-                                if(i == 1){
-                                    descricao =  "Manutenção";
+                                if (i == 0) {
+                                    descricao = "Pneu";
+                                    img = R.drawable.roda;
+                                } else if (i == 1) {
+                                    descricao = "Manutenção";
                                     img = R.drawable.manutencao;
                                 }
 
 
+                            }
                         }
+
+                        msg("Dados salvo");
+                        EventBus.getDefault().post(transporte);
+                        finish();
                     }
-
-                    Toast.makeText(v.getContext(), "Dados salvo", Toast.LENGTH_SHORT).show();
-
-                    finish();
                 } catch (Exception e) {
-                    Toast.makeText(v.getContext(), "erro " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    msg("erro " + e.getMessage());
                 }
 
             }
@@ -177,10 +182,50 @@ public class CadastroTransporteActivity extends AppCompatActivity {
         transporte.setKm(Integer.parseInt(km.getText().toString()));
         transporte.setPotencia(Double.parseDouble(potencia.getText().toString()));
         transporte.setTipo(rgTipo.getCheckedRadioButtonId());
-        transporte.setImagem(imagemSelecionada);
+        if(imagemSelecionada != 0){
+            transporte.setImagem(imagemSelecionada);
+        }
 
         return transporte;
     }
+
+    public boolean validarCampos(){
+
+
+        if(modelo.getText().toString() == null ||modelo.getText().toString().equals("")){
+            modelo.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+        if(marca.getText().toString()== null || marca.getText().toString().equals("")){
+            marca.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+        if(ano.getText().toString() == null || ano.getText().toString().equals("")) {
+            ano.requestFocus()  ;
+            msg("Campo obrigatorio");
+            return false;
+        }
+        if(km.getText().toString() == null || km.getText().toString().equals("")) {
+            km.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+        if(potencia.getText().toString() == null || potencia.getText().toString().equals("")) {
+            potencia.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public void msg(String mensage){
+        Toast.makeText(this,mensage,Toast.LENGTH_LONG).show();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -204,10 +249,10 @@ public class CadastroTransporteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home) {
+            finish();
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

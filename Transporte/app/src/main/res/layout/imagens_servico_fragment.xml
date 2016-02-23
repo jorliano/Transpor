@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    xmlns:card_view="http://schemas.android.com/tools">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_analise"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/analiese"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_motor"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/motor"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_amortecedor"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/amortecedor"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_bateria"
+            android:layout_marginTop="35dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/bateria"
+            android:layout_below="@+id/editText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_marcha"
+            android:layout_alignTop="@+id/ib_bateria"
+            android:layout_alignLeft="@+id/ib_motor"
+            android:layout_alignStart="@+id/ib_motor"
+            android:background="@android:color/transparent"
+            android:src="@drawable/marchas"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_tracao"
+            android:layout_alignTop="@+id/ib_marcha"
+            android:layout_alignLeft="@+id/ib_amortecedor"
+            android:layout_alignStart="@+id/ib_amortecedor"
+            android:background="@android:color/transparent"
+            android:src="@drawable/tracao"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:text="Analise"
+            android:layout_below="@+id/ib_analise"
+            android:layout_alignRight="@+id/ib_analise"
+            android:layout_alignEnd="@+id/ib_analise"
+            android:layout_marginRight="33dp"
+            android:layout_marginEnd="33dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText2"
+            android:text="Motor"
+            android:layout_alignBottom="@+id/editText"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText3"
+            android:text="Amortecedor"
+            android:layout_below="@+id/ib_amortecedor"
+            android:layout_alignLeft="@+id/ib_amortecedor"
+            android:layout_alignStart="@+id/ib_amortecedor" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText4"
+            android:text="Bateria"
+            android:layout_below="@+id/ib_bateria"
+            android:layout_alignRight="@+id/editText"
+            android:layout_alignEnd="@+id/editText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText5"
+            android:text="Marchas"
+            android:layout_above="@+id/ib_pneu"
+            android:layout_alignLeft="@+id/editText2"
+            android:layout_alignStart="@+id/editText2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText6"
+            android:text="Tração"
+            android:layout_below="@+id/ib_tracao"
+            android:layout_alignLeft="@+id/editText9"
+            android:layout_alignStart="@+id/editText9" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_pneu"
+            android:layout_marginTop="17dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/roda"
+            android:layout_below="@+id/editText4"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_manutencao"
+            android:background="@android:color/transparent"
+            android:src="@drawable/manutencao"
+            android:layout_alignTop="@+id/ib_pneu"
+            android:layout_alignLeft="@+id/ib_marcha"
+            android:layout_alignStart="@+id/ib_marcha"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:id="@+id/ib_oleo"
+            android:background="@android:color/transparent"
+            android:src="@drawable/oleo"
+            android:layout_alignTop="@+id/ib_manutencao"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText7"
+            android:text="Pneu"
+            android:layout_below="@+id/ib_pneu"
+            android:layout_alignLeft="@+id/editText4"
+            android:layout_alignStart="@+id/editText4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText8"
+            android:text="Manutenção"
+            android:layout_alignTop="@+id/editText7"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText9"
+            android:text="Oelo"
+            android:layout_below="@+id/ib_oleo"
+            android:layout_alignRight="@+id/editText3"
+            android:layout_alignEnd="@+id/editText3"
+            android:layout_marginRight="18dp"
+            android:layout_marginEnd="18dp" />
+    </RelativeLayout>
+
+
+
+</FrameLayout>

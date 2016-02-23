@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import java.util.Date;
 
 import br.com.jortec.jorliano.transporte.dominio.Servicos;
+import de.greenrobot.event.EventBus;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -47,7 +49,7 @@ public class CadastroServicosActivity extends AppCompatActivity {
         servico = new Servicos();
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle( "Serviço");
+        collapsingToolbarLayout.setTitle("Serviço");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.detalhe_toolbar);
         toolbar.setTitle("Serviço");
@@ -62,16 +64,32 @@ public class CadastroServicosActivity extends AppCompatActivity {
         btSalvar = (Button) findViewById(R.id.bt_salver);
         btTroca = (Button) findViewById(R.id.bt_troca);
 
-        String opSpinner [] = {"1.000", "2.000", "3.000", "4.000", "5.000"};
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, opSpinner);
+        String opSpinner[] = {"1.000", "2.000", "3.000", "4.000", "5.000"};
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opSpinner);
         spPeriodo.setAdapter(adp);
 
         btTroca.setVisibility(View.GONE);
+        spPeriodo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(id > 0 && !edtUltimaTroca.getText().toString().equals("")){
+                    int pxTroca = Integer.parseInt(edtUltimaTroca.getText().toString()) + (position + 1) * 1000;
+                    edtProximaTroca.setText(String.valueOf(pxTroca));
+                }
 
-        if(getIntent() != null && getIntent().getLongExtra(Servicos.ID,0) > 0){
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        if (getIntent() != null && getIntent().getLongExtra(Servicos.ID, 0) > 0) {
             servico.setId(getIntent().getLongExtra(Servicos.ID, 0));
 
-            servico = realm.where(Servicos.class).equalTo("id",servico.getId()).findFirst();
+            servico = realm.where(Servicos.class).equalTo("id", servico.getId()).findFirst();
 
             edtDescricao.setText(servico.getDescricao());
             edtProximaTroca.setText(String.valueOf(servico.getProximaTroca()));
@@ -82,17 +100,33 @@ public class CadastroServicosActivity extends AppCompatActivity {
             btTroca.setVisibility(View.VISIBLE);
         }
 
+        if (getIntent() != null && getIntent().getSerializableExtra("imagem") != null) {
+
+            servico = (Servicos) getIntent().getSerializableExtra("imagem");
+            edtDescricao.setText(servico.getDescricao());
+            tbImagem.setImageResource((int) servico.getImagem());
+
+        }
+
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                realm.beginTransaction();
-                preencerDados();
-                realm.copyToRealmOrUpdate(servico);
-                realm.commitTransaction();
+                try {
+                    if (validarCampos()) {
+                        realm.beginTransaction();
+                        preencerDados();
+                        realm.copyToRealmOrUpdate(servico);
+                        realm.commitTransaction();
 
-                Toast.makeText(v.getContext(),"Dados salvo ",Toast.LENGTH_SHORT).show();
-                finish();
+                        Toast.makeText(v.getContext(), "Dados salvo ", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(servico);
+                        finish();
+                    }
+
+                } catch (Exception e) {
+                    msg(e.getMessage());
+                }
 
             }
         });
@@ -100,23 +134,23 @@ public class CadastroServicosActivity extends AppCompatActivity {
         btTroca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(servico.getId() > 0){
+                if (servico.getId() > 0) {
 
-                    Intent intent = new Intent(v.getContext(),MaterialActivity.class);
+                    Intent intent = new Intent(v.getContext(), MaterialActivity.class);
                     intent.putExtra(Servicos.ID, servico.getId());
                     startActivity(intent);
 
-                }else{
-                    Toast.makeText(v.getContext(),"Serviço não foi cadastrado ainda",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(v.getContext(), "Serviço não foi cadastrado ainda", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
-    public void preencerDados(){
+    public void preencerDados() {
 
-        if(servico.getId() == 0) {
+        if (servico.getId() == 0) {
             //gerando id
             servicos.sort("id", Sort.DESCENDING);
             long id = servicos.size() == 0 ? 1 : servicos.get(0).getId() + 1;
@@ -129,6 +163,27 @@ public class CadastroServicosActivity extends AppCompatActivity {
         servico.setProximaTroca(servico.getUltimaTroca() + ((servico.getPeriodo() + 1) * 1000));
         servico.setData(new Date());
 
+    }
+
+
+    public boolean validarCampos() {
+        if (edtDescricao.getText().toString() == null || edtDescricao.getText().toString().equals("")) {
+            edtDescricao.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+        if (edtUltimaTroca.getText().toString() == null || edtUltimaTroca.getText().toString().equals("")) {
+            edtUltimaTroca.requestFocus();
+            msg("Campo obrigatorio");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public void msg(String mensage) {
+        Toast.makeText(this, mensage, Toast.LENGTH_LONG).show();
     }
 
 

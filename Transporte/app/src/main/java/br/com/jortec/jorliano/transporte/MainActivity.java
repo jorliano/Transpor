@@ -1,5 +1,6 @@
 package br.com.jortec.jorliano.transporte;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
 
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.tbs_layout);
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(android.R.color.white));
+        //slidingTabLayout.setBackgroundColor(getResources().getColor(android.R.color.white));
         slidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
             @Override
             public void onPageSelected(int position) {
                 navegadorDrawer.setSelection(position);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).build();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

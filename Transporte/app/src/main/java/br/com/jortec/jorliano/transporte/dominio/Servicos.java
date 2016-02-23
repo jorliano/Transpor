@@ -1,5 +1,6 @@
 package br.com.jortec.jorliano.transporte.dominio;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import io.realm.RealmList;
@@ -9,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Jorliano on 02/02/2016.
  */
-public class Servicos extends RealmObject {
+public class Servicos extends RealmObject implements Serializable{
     public static final String ID = "br.com.jortec.jorliano.transporte.dominio.servico.ID";
     public static final String PESQUISA = "br.com.jortec.jorliano.transporte.dominio.servico.PESQUISA";
 

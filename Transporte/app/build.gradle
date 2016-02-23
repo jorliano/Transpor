@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:design:23.0.+'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.github.thorbenprimke:realm-recyclerview:0.9.12'
+    compile 'com.wdullaer:materialdatetimepicker:2.1.1'
 }

@@ -1,11 +1,16 @@
 package br.com.jortec.jorliano.transporte;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import br.com.jortec.jorliano.transporte.adapter.BuscaAdapter;
 import br.com.jortec.jorliano.transporte.dominio.Material;
@@ -14,7 +19,7 @@ import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class PesquisaActivity extends AppCompatActivity {
+public class PesquisaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private Toolbar toolbar;
 
@@ -22,9 +27,6 @@ public class PesquisaActivity extends AppCompatActivity {
     Realm realm;
     RealmResults<Material> materials;
     Servicos servico;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +84,71 @@ public class PesquisaActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             finish();
+        }else if(id == R.id.pesquisa_material){
+            schedukePesquisa();
         }
 
         return true;
     }
+
+    //PESQUISA MANUTENÇOES
+    private int ano, mes, dia;
+
+    public void schedukePesquisa(){
+        initData();
+        Calendar calendarDefault = Calendar.getInstance();
+        calendarDefault.set(ano,mes,dia);
+
+        DatePickerDialog dataPickerDialog = DatePickerDialog.newInstance(
+                this,
+                calendarDefault.get(Calendar.YEAR),
+                calendarDefault.get(Calendar.MONTH),
+                calendarDefault.get(Calendar.DAY_OF_MONTH));
+
+        Calendar cMin = Calendar.getInstance();
+        Calendar cMax = Calendar.getInstance();
+        cMax.set(cMax.get(Calendar.YEAR), 11, 31);
+        dataPickerDialog.setMinDate(cMin);
+        dataPickerDialog.setMaxDate(cMax);
+
+        List<Calendar> dayList = new LinkedList<>();
+        Calendar[] dayArray;
+        Calendar cAux = Calendar.getInstance();
+
+        while(cAux.getTimeInMillis() <= cMax.getTimeInMillis()){
+            if(cAux.get(Calendar.DAY_OF_WEEK) != 1 && cAux.get(Calendar.DAY_OF_WEEK) != 7 ){
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(cAux.getTimeInMillis());
+
+                dayList.add(c);
+            }
+            cAux.setTimeInMillis(cAux.getTimeInMillis() + (24 * 60 * 60 * 100));
+        }
+        dayArray = new Calendar[dayList.size()];
+        for (int i = 0; i < dayArray.length; i ++){
+            dayArray[i] = dayList.get(i);
+        }
+
+        dataPickerDialog.setSelectableDays(dayArray);
+        dataPickerDialog.show(getFragmentManager(), "DataPickerDialog");
+    }
+
+    public void initData(){
+        if(ano == 0) {
+            Calendar c = Calendar.getInstance();
+            ano = c.get(Calendar.YEAR);
+            mes = c.get(Calendar.MONTH);
+            dia = c.get(Calendar.DAY_OF_MONTH);
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+        Calendar tDefault = Calendar.getInstance();
+        tDefault.set(ano, mes, dia);
+        ano = i;
+        mes = i1;
+        dia = i2;
+    }
+
 }
