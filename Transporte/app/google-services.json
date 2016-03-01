@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_id": "trasnporte-cd355",
+    "project_number": "604605145584",
+    "name": "Trasnporte"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604605145584:android:5f1c91c411165d14",
+        "client_id": "android:br.com.jortec.jorliano.transporte",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "br.com.jortec.jorliano.transporte"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

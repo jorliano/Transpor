@@ -1,6 +1,7 @@
 package br.com.jortec.jorliano.transporte;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +20,9 @@ import br.com.jortec.jorliano.transporte.dominio.Servicos;
 import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
-public class PesquisaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class PesquisaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private Toolbar toolbar;
 
@@ -35,24 +38,13 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
 
         realmRecyclerView = (RealmRecyclerView) findViewById(R.id.realm_recycler_pesquisa);
 
-        if(getIntent() != null && getIntent().getLongExtra(Servicos.ID,0) > 0) {
+        if (getIntent() != null && getIntent().getLongExtra(Servicos.ID, 0) > 0) {
 
             realm = Realm.getDefaultInstance();
-            servico = realm.where(Servicos.class).equalTo("id", getIntent().getLongExtra(Servicos.ID,0)).findFirst();
-
-
-            materials = realm.where(Material.class).findAll();
-            for(int i = 0;i < servico.getMateriais().size(); i++) {
-                Log.i("LOG ", "Itens ----> \n "+"Id " +servico.getMateriais().get(i).getId() +"\n"+ "Nome " + servico.getMateriais().get(i).getDescricao() + "\n" +
-                        "Valor " + servico.getMateriais().get(i).getValor());
-
-
-
-            }
-            Log.i("LOG ", "SIZE " + materials.size());
-
+            servico = realm.where(Servicos.class).equalTo("id", getIntent().getLongExtra(Servicos.ID, 0)).findFirst();
 
             materials = servico.getMateriais().where().findAll();
+            materials.sort("data", Sort.DESCENDING);
 
 
         }
@@ -84,7 +76,7 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             finish();
-        }else if(id == R.id.pesquisa_material){
+        } else if (id == R.id.pesquisa_material) {
             schedukePesquisa();
         }
 
@@ -94,10 +86,10 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
     //PESQUISA MANUTENÇOES
     private int ano, mes, dia;
 
-    public void schedukePesquisa(){
+    public void schedukePesquisa() {
         initData();
         Calendar calendarDefault = Calendar.getInstance();
-        calendarDefault.set(ano,mes,dia);
+        calendarDefault.set(ano, mes, dia);
 
         DatePickerDialog dataPickerDialog = DatePickerDialog.newInstance(
                 this,
@@ -107,25 +99,29 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
 
         Calendar cMin = Calendar.getInstance();
         Calendar cMax = Calendar.getInstance();
-        cMax.set(cMax.get(Calendar.YEAR), 11, 31);
+
+        materials.sort("data", Sort.ASCENDING);
+
+        cMax.setTime(materials.get(materials.size() - 1).getData());
+        cMin.setTime(materials.get(0).getData());
         dataPickerDialog.setMinDate(cMin);
         dataPickerDialog.setMaxDate(cMax);
 
         List<Calendar> dayList = new LinkedList<>();
         Calendar[] dayArray;
-        Calendar cAux = Calendar.getInstance();
 
-        while(cAux.getTimeInMillis() <= cMax.getTimeInMillis()){
-            if(cAux.get(Calendar.DAY_OF_WEEK) != 1 && cAux.get(Calendar.DAY_OF_WEEK) != 7 ){
-                Calendar c = Calendar.getInstance();
-                c.setTimeInMillis(cAux.getTimeInMillis());
+        Log.i("LOG", "Datas Inicial " + cMin.getTime() + "\nData final " + cMax.getTime());
 
-                dayList.add(c);
-            }
-            cAux.setTimeInMillis(cAux.getTimeInMillis() + (24 * 60 * 60 * 100));
+
+        for (int i = 0; i < materials.size(); i++) {
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(materials.get(i).getData());
+            dayList.add(c);
+
         }
         dayArray = new Calendar[dayList.size()];
-        for (int i = 0; i < dayArray.length; i ++){
+        for (int i = 0; i < dayArray.length; i++) {
             dayArray[i] = dayList.get(i);
         }
 
@@ -133,9 +129,17 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
         dataPickerDialog.show(getFragmentManager(), "DataPickerDialog");
     }
 
-    public void initData(){
-        if(ano == 0) {
+    public void initData() {
+
+        materials = servico.getMateriais().where().findAll();
+        materials.sort("data", Sort.DESCENDING);
+
+        if (ano == 0) {
+
             Calendar c = Calendar.getInstance();
+            Log.i("LOG", "Data inicial " + materials.get(materials.size() - 1).getData());
+            c.setTime(materials.get(materials.size() - 1).getData());
+
             ano = c.get(Calendar.YEAR);
             mes = c.get(Calendar.MONTH);
             dia = c.get(Calendar.DAY_OF_MONTH);
@@ -145,10 +149,19 @@ public class PesquisaActivity extends AppCompatActivity implements DatePickerDia
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
         Calendar tDefault = Calendar.getInstance();
-        tDefault.set(ano, mes, dia);
+        tDefault.set(ano, mes, dia,0,0,0);
         ano = i;
         mes = i1;
         dia = i2;
+
+        Log.i("LOG", "Data selecionada " + tDefault.getTime() + "\nData pesquisada " + materials.get(0).getData());
+
+
+        materials = materials.where().equalTo("data", tDefault.getTime()).findAll();
+
+        Log.i("LOG", "Data pesquisada "+materials.get(0).getData());
+        //realmRecyclerView.notify();
+        realmRecyclerView.setAdapter(new BuscaAdapter(this, materials, true, true));
     }
 
 }
